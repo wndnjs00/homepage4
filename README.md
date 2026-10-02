@@ -145,6 +145,6 @@ All projects, clients, service descriptions, and contact details come from the c
 - Fonts: Pretendard (OFL) and JetBrains Mono (OFL).
 
 ## Files
-- `Mirae INT Website.html` — markup and all copy
+- `index.html` — markup and all copy
 - `site.css` — tokens, layout, responsive rules, and hover/motion
 - `site.js` — header behavior, clock, hero and tech canvases, project data/filter/render, industry bar, marquee, reveals, and counters

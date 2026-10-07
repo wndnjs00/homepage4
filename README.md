@@ -145,6 +145,7 @@ All projects, clients, service descriptions, and contact details come from the c
 - Fonts: Pretendard (OFL) and JetBrains Mono (OFL).
 
 ## Files
-- `index.html` — markup and all copy
+- `index.html` — home (Hero)
+- `about.html`, `business.html`, `competency.html` (Competency + Technology), `projects.html`, `careers.html`, `contact.html` — one page per menu item, each with a dark page-hero band (`.phero`) and the active link marked with `aria-current="page"`
 - `site.css` — tokens, layout, responsive rules, and hover/motion
 - `site.js` — header behavior, clock, hero and tech canvases, project data/filter/render, industry bar, marquee, reveals, and counters

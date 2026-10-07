@@ -6,10 +6,11 @@ const ACC = [80, 214, 130]; // approx accent rgb for canvas
 
 /* ── Header ── */
 const hdr = $('#hdr');
+const topBand = $('.hero, .phero');
 let lastY = 0;
 const onScroll = () => {
   const y = scrollY;
-  hdr.classList.toggle('solid', y > innerHeight * 0.85);
+  hdr.classList.toggle('solid', y > (topBand ? topBand.offsetHeight - hdr.offsetHeight : 0));
   hdr.classList.toggle('hide', y > lastY && y > innerHeight && !document.body.classList.contains('menu-open'));
   lastY = y;
 };
@@ -19,12 +20,16 @@ $$('#mnav a').forEach(a => a.onclick = () => document.body.classList.remove('men
 
 /* ── Clock ── */
 const clk = $('#clock');
-const tick = () => { clk.textContent = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Seoul', hour12: false }); };
-tick(); setInterval(tick, 1000);
+if (clk) {
+  const tick = () => { clk.textContent = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Seoul', hour12: false }); };
+  tick(); setInterval(tick, 1000);
+}
 
 /* ── Hero canvas: lattice of nodes with travelling packets ── */
 (function hero() {
-  const cv = $('#heroCanvas'), cx = cv.getContext('2d');
+  const cv = $('#heroCanvas');
+  if (!cv) return;
+  const cx = cv.getContext('2d');
   let W, H, dpr, nodes = [], edges = [], packets = [], t0 = performance.now();
   let mx = 0.7, my = 0.5, tmx = 0.7, tmy = 0.5;
   function build() {
@@ -115,7 +120,9 @@ tick(); setInterval(tick, 1000);
 
 /* ── Tech canvas: orbital precision rings ── */
 (function tech() {
-  const cv = $('#techCanvas'), cx = cv.getContext('2d');
+  const cv = $('#techCanvas');
+  if (!cv) return;
+  const cx = cv.getContext('2d');
   let W, H, dpr, pts = [];
   function build() {
     dpr = Math.min(devicePixelRatio || 1, 2);
@@ -203,6 +210,7 @@ const PROJECTS = [
   ['2024', 'IBK기업은행 정보시스템 운영', '은행', 'ITO'],
   ['2024', '흥국생명 IT 어플리케이션 유지보수', '보험', 'ITO'],
 ];
+if ($('#plist')) {
 const cats = ['전체', 'SI', 'ITO', 'Solution'];
 let cur = '전체', expanded = false;
 const LIMIT = 8;
@@ -227,8 +235,10 @@ function render() {
 }
 moreBtn.onclick = () => { expanded = !expanded; render(); };
 render();
+}
 
 /* viz — industry breakdown */
+if ($('#viz')) {
 const inds = {};
 PROJECTS.forEach(p => { const k = p[2] === '기타' || p[2] === '서비스' ? '제조·서비스' : p[2]; inds[k] = (inds[k] || 0) + 1; });
 const order = ['은행', '보험', '저축은행', '기타 금융', '제조·서비스'];
@@ -236,12 +246,13 @@ const cols = ['#0A110F', '#3C4843', '#7A8680', 'oklch(0.52 0.13 152)', 'oklch(0.
 $('#vizBar').innerHTML = order.map((k, i) => `<i style="flex:${inds[k] || 0};background:${cols[i]};transition-delay:${i * 0.08}s"></i>`).join('');
 $('#vizLegend').innerHTML = order.map((k, i) => `<div><i style="background:${cols[i]}"></i>${k}<b>${inds[k] || 0}</b></div>`).join('');
 $('#vizNote').textContent = `N = ${PROJECTS.length} · 2024–2026`;
+}
 
 /* marquee clients (공개 자료 게재 고객사) */
 const c1 = ['농협은행', 'IBK기업은행', 'SC제일은행', '흥국생명', '흥국화재', '현대카드', '라이나손해보험', 'KDB캐피탈'];
 const c2 = ['현대차증권', 'SBI저축은행', '한국투자저축은행', '애큐온저축은행', '애큐온캐피탈', 'BNK캐피탈', '태광그룹', '경동나비엔'];
 const fill = (el, arr) => { const h = arr.map(n => `<span>${n}</span>`).join(''); el.innerHTML = h + h; };
-fill($('#mq1'), c1); fill($('#mq2'), c2);
+if ($('#mq1')) { fill($('#mq1'), c1); fill($('#mq2'), c2); }
 
 /* ── Reveal + counters ── */
 const io = new IntersectionObserver(es => es.forEach(e => {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>미래아이엔텍 | Mirae I&amp;N Tech</title>
+<title>사업실적 | 미래아이엔텍</title>
 <link rel="stylesheet" href="site.css">
 </head>
 <body style="background-color: rgb(224, 224, 203)">
@@ -19,7 +19,7 @@
       <a href="about.html">회사소개</a>
       <a href="business.html">사업영역</a>
       <a href="competency.html">핵심역량</a>
-      <a href="projects.html">사업실적</a>
+      <a href="projects.html" aria-current="page">사업실적</a>
       <a href="careers.html">인재채용</a>
       <a href="contact.html" class="nav-cta">Contact</a>
     </nav>
@@ -31,32 +31,45 @@
     <li><a href="about.html">회사소개</a></li>
     <li><a href="business.html">사업영역</a></li>
     <li><a href="competency.html">핵심역량</a></li>
-    <li><a href="projects.html">사업실적</a></li>
+    <li><a href="projects.html" aria-current="page">사업실적</a></li>
     <li><a href="careers.html">인재채용</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ol>
   <div class="mnav-foot">T. 02-557-5267<br><a href="mailto:mrint01@mrint.co.kr">mrint01@mrint.co.kr</a></div>
 </div>
 
-<!-- 01 Hero -->
-<section class="hero" id="top" data-screen-label="01 Hero">
-  <canvas id="heroCanvas"></canvas>
-  <div class="hero-veil"></div>
-  <div class="wrap hero-body">
-    <div class="eyebrow">Mirae I&amp;N Tech — Financial IT Partner since 2003</div>
-    <h1><span class="ln"><span>금융의 미래를</span></span><span class="ln"><span><em>연결</em>하는 기술</span></span></h1>
-    <p class="hero-sub">금융 IT의 깊이 있는 경험과 기술력을 바탕으로 시스템 구축부터 운영까지, 기업의 디지털 혁신을 함께합니다.</p>
-    <div class="hero-actions">
-      <a href="business.html" class="btn btn-accent">사업영역 보기 <span class="arr"></span></a>
-      <a href="projects.html" class="btn btn-ghost">사업실적 <span class="arr"></span></a>
-    </div>
+<!-- Page Hero -->
+<section class="phero">
+  <div class="wrap">
+    <div class="eyebrow">Projects</div>
+    <h1>사업실적</h1>
   </div>
-  <div class="hero-foot">
-    <div class="wrap">
-      <div class="cell"><span class="live"></span><b>System Status</b>&nbsp;Operational</div>
-      <div class="cell">Est.&nbsp;<b>2003</b></div>
-      <div class="cell">SI · ITO · Infra · Solution</div>
-      <div class="cell">Seoul, KR&nbsp;<b id="clock">--:--:--</b></div>
+</section>
+
+<!-- 05 Projects -->
+<section class="proj sec" id="projects" data-screen-label="05 Projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow rv">04 — Project Experience</div>
+      <h2 class="rv d1">금융 현장에서<br>증명된 수행 이력</h2>
+      <p class="rv d2">은행, 보험, 저축은행, 카드·캐피탈, 그리고 제조·서비스 산업까지. 미래아이엔텍이 수행하고 있는 주요 사업입니다.</p>
+    </div>
+    <div class="proj-bar">
+      <div class="filters" id="filters"></div>
+      <div class="proj-count" id="projCount"></div>
+    </div>
+    <ul class="plist" id="plist"></ul>
+    <div class="more"><button class="btn" id="moreBtn">전체 실적 보기 <span class="arr"></span></button></div>
+
+    <div class="clients">
+      <div>
+        <div class="eyebrow">Main Clients</div>
+        <p class="note">사업실적 및 서비스 소개에 게재된 고객사입니다.</p>
+      </div>
+      <div>
+        <div class="marq marq-row"><div class="marq-track" id="mq1"></div></div>
+        <div class="marq marq-row"><div class="marq-track" id="mq2"></div></div>
+      </div>
     </div>
   </div>
 </section>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contact | 미래아이엔텍</title>
+<title>News&amp;Notices | 미래아이엔텍</title>
 <meta name="description" content="미래아이엔텍은 2003년 설립 이래 금융권 IT에 특화된 전문기업으로, ITO·SI·인프라·솔루션 등 IT 전 분야에 걸쳐 차별화된 서비스를 제공합니다.">
 <link rel="stylesheet" href="site.css">
 </head>
@@ -19,11 +19,11 @@
     </a>
     <nav class="nav" aria-label="주 메뉴">
       <div class="nav-item">
-        <a href="company.html" class="nav-top">COMPANY<i class="caret"></i></a>
+        <a href="company.html" class="nav-top" aria-current="page">COMPANY<i class="caret"></i></a>
         <div class="drop">
           <a href="company.html"><em>01</em><span><b>Mirae I&amp;Tec</b><i>기업 소개 · 비전 · 오시는 길</i></span></a>
           <a href="team.html"><em>02</em><span><b>Team</b><i>대표이사 및 5개 전문 조직</i></span></a>
-          <a href="news.html"><em>03</em><span><b>News&amp;Notices</b><i>뉴스 · 공지사항</i></span></a>
+          <a href="news.html" aria-current="page"><em>03</em><span><b>News&amp;Notices</b><i>뉴스 · 공지사항</i></span></a>
         </div>
       </div>
       <div class="nav-item">
@@ -34,7 +34,7 @@
         </div>
       </div>
       <button class="nav-search" type="button" data-open-search>SEARCH <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4L14 14"/></svg></button>
-      <a href="contact.html" class="nav-cta" aria-current="page">Contact</a>
+      <a href="contact.html" class="nav-cta">Contact</a>
     </nav>
     <button class="burger" id="burger" aria-label="메뉴"><span></span><span></span></button>
   </div>
@@ -46,7 +46,7 @@
       <ol>
         <li><a href="company.html">Mirae I&amp;Tec<small>기업 소개 · 비전 · 오시는 길</small></a></li>
         <li><a href="team.html">Team<small>대표이사 및 5개 전문 조직</small></a></li>
-        <li><a href="news.html">News&amp;Notices<small>뉴스 · 공지사항</small></a></li>
+        <li><a href="news.html" aria-current="page">News&amp;Notices<small>뉴스 · 공지사항</small></a></li>
       </ol>
     </div>
     <div class="mnav-grp">
@@ -59,7 +59,7 @@
     <div class="mnav-grp">
       <span class="mono">CONTACT</span>
       <ol>
-        <li><a href="contact.html" aria-current="page">Contact<small>프로젝트 · 협력 문의</small></a></li>
+        <li><a href="contact.html">Contact<small>프로젝트 · 협력 문의</small></a></li>
       </ol>
     </div>
   </div>
@@ -82,53 +82,16 @@
 
 <!-- Page Hero -->
 <section class="phero">
-  <div class="phero-bg"><img src="images/phero-contact.jpg" alt=""></div>
+  <div class="phero-bg"><img src="images/phero-news.jpg" alt=""></div>
   <div class="wrap phero-in">
-    <nav class="crumb" id="crumb"><a href="index.html">Home</a><i>/</i><span>Contact</span></nav>
-    <div id="pheadIn"><h1>Contact</h1><p class="lead">시스템 구축·운영 유지보수·인프라·솔루션 문의를 남겨주시면 담당자가 검토 후 연락드립니다.</p></div>
+    <nav class="crumb" id="crumb"><a href="index.html">Home</a><i>/</i><span>Company</span><i>/</i><span>News&amp;Notices</span></nav>
+    <div id="pheadIn"><h1>News&amp;Notices</h1><p class="lead">미래아이엔텍의 주요 사업 수주 소식과 공지사항입니다.</p></div>
   </div>
 </section>
 
 <section class="about sec">
   <div class="wrap">
-    <div class="dtl">
-      <div class="dtl-body rv">
-        <h2>문의하기</h2>
-        <p>아래 정보를 입력해 주세요. 실제 서비스 적용 시 담당자 메일(mrint01@mrint.co.kr)로 전송되도록 연동하는 영역입니다.</p>
-        <form class="frm" id="contactForm">
-          <div class="frm-row">
-            <label>회사명 / 기관명<input type="text" placeholder="예) ○○은행"></label>
-            <label>담당자 성함<input type="text" placeholder="홍길동"></label>
-          </div>
-          <div class="frm-row">
-            <label>연락처<input type="tel" placeholder="010-0000-0000"></label>
-            <label>이메일<input type="email" placeholder="name@company.co.kr"></label>
-          </div>
-          <label>문의 분야
-            <select>
-              <option>IT OUTSOURCING</option>
-              <option>SYSTEM INTEGRATION</option>
-              <option>INFRASTRUCTURE</option>
-              <option>SOLUTION</option>
-              <option>기타 / 협력 제안</option>
-            </select>
-          </label>
-          <label>문의 내용<textarea rows="6" placeholder="프로젝트 개요, 일정, 범위 등을 자유롭게 작성해 주세요."></textarea></label>
-          <div class="frm-act">
-            <button class="btn btn-ink" type="submit">문의 접수 <span class="arr"></span></button>
-            <span class="mono" id="frmMsg">※ 시안이므로 실제 전송은 되지 않습니다.</span>
-          </div>
-        </form>
-      </div>
-      <aside class="dtl-side rv d1">
-        <dl>
-          <div><dt>Telephone</dt><dd><a href="tel:025575267">02-557-5267</a></dd></div>
-          <div><dt>Fax</dt><dd>02-557-5268</dd></div>
-          <div><dt>E-mail</dt><dd><a href="mailto:mrint01@mrint.co.kr">mrint01@mrint.co.kr</a></dd></div>
-          <div><dt>Address</dt><dd>서울시 중구 수표로 23, 1001호, 1101호<small>23 Supyo-ro, Jung-gu, Seoul, Republic of Korea</small></dd></div>
-        </dl>
-      </aside>
-    </div>
+    <div class="plist" id="newsList"></div>
   </div>
 </section>
 

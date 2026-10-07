@@ -18,6 +18,27 @@ addEventListener('scroll', onScroll, { passive: true }); onScroll();
 $('#burger').onclick = () => document.body.classList.toggle('menu-open');
 $$('#mnav a').forEach(a => a.onclick = () => document.body.classList.remove('menu-open'));
 
+/* ── Search overlay ── */
+const srch = $('#srch'), srchIn = $('#srchIn'), srchOut = $('#srchOut');
+const openSearch = on => {
+  document.body.classList.toggle('search-open', on);
+  if (on) { document.body.classList.remove('menu-open'); setTimeout(() => srchIn.focus(), 50); }
+};
+$$('[data-open-search]').forEach(b => b.onclick = () => openSearch(true));
+$$('[data-close-search]').forEach(b => b.onclick = () => openSearch(false));
+addEventListener('keydown', e => { if (e.key === 'Escape') { openSearch(false); document.body.classList.remove('menu-open'); } });
+srchIn.oninput = () => {
+  const q = srchIn.value.trim().toLowerCase();
+  if (!q) { srchOut.innerHTML = ''; return; }
+  const has = s => s.toLowerCase().includes(q), hits = [];
+  NEWS.forEach(n => has(n.ttl + ' ' + n.tag) && hits.push(['NEWS', n.date, n.ttl, `news-detail.html?id=${n.id}`]));
+  PROJECTS.forEach((p, i) => has([p.t, p.cl, p.c, p.k].join(' ')) && hits.push([p.k, p.d, p.t, `project.html?i=${i}`]));
+  BL.forEach(b => has([b.ttl, b.desc, ...b.pts].join(' ')) && hits.push(['BUSINESS', b.k.toUpperCase(), `${b.ttl} — ${b.desc}`, `business-line.html?k=${b.k}`]));
+  srchOut.innerHTML = hits.length
+    ? hits.slice(0, 12).map(([k, d, t, u]) => `<li><a href="${u}"><span class="mono">${k}</span><span class="mono">${d}</span><span>${t.replace(/</g, '&lt;')}</span></a></li>`).join('')
+    : '<li class="none">검색 결과가 없습니다.</li>';
+};
+
 /* ── Clock ── */
 const clk = $('#clock');
 if (clk) {
@@ -186,80 +207,177 @@ if (clk) {
   build(); draw(0);
 })();
 
-/* ── Projects (공개 사업실적 기준) ── */
-const PROJECTS = [
-  ['2026', '농협은행 NEO 계정계 차세대 구축 / 외국환 개선', '은행', 'SI'],
-  ['2026', '흥국화재 IT 어플리케이션 유지보수', '보험', 'ITO'],
-  ['2026', '한국투자저축은행 ‘계정·채널 통합관리’ 정보시스템 유지보수', '저축은행', 'ITO'],
-  ['2025', 'SC제일은행 신용대출 신청화면 신설 프로젝트', '은행', 'SI'],
-  ['2025', 'SC제일은행 펀드 프로세스개선 _ Peer Review Action 이행', '은행', 'SI'],
-  ['2025', 'SC제일은행 집중도 프로세스 도입', '은행', 'SI'],
-  ['2025', 'SC제일은행 햇살론 119 전문 개발 프로젝트', '은행', 'SI'],
-  ['2025', 'SC제일은행 상생 보증부 대출 전문 개발 프로젝트', '은행', 'SI'],
-  ['2025', '경동나비엔 영국법인 상담시스템 DB암호화 솔루션 공급', '기타', 'Solution'],
-  ['2025', '경동나비엔 파트너포탈 DB암호화 솔루션 공급', '기타', 'Solution'],
-  ['2025', '경동나비엔 중국 CIC DB암호화 솔루션 공급', '기타', 'Solution'],
-  ['2025', '경동나비엔 Next나비엔 DB 암호화', '기타', 'Solution'],
-  ['2025', 'KDB캐피탈 차세대 (인프라 구축)', '기타 금융', 'SI'],
-  ['2024', '애큐온저축은행 채널 운영', '저축은행', 'ITO'],
-  ['2024', '티알엔 정보시스템 운영 용역 (TAS)', '서비스', 'ITO'],
-  ['2024', 'BNK캐피탈 영업지원시스템 화면(UI/UX) 전환 사업', '기타 금융', 'SI'],
-  ['2024', '라이나손해보험 어플리케이션 유지보수', '보험', 'ITO'],
-  ['2024', '태광그룹 11개 계열사 홈페이지 운영', '기타', 'ITO'],
-  ['2024', '현대카드 채널계 / 처리계 유지보수 운영', '기타 금융', 'ITO'],
-  ['2024', 'IBK기업은행 정보시스템 운영', '은행', 'ITO'],
-  ['2024', '흥국생명 IT 어플리케이션 유지보수', '보험', 'ITO'],
-];
-if ($('#plist')) {
-const cats = ['전체', 'SI', 'ITO', 'Solution'];
-let cur = '전체', expanded = false;
-const LIMIT = 8;
-const fwrap = $('#filters');
-cats.forEach(c => {
-  const b = document.createElement('button');
-  const n = c === '전체' ? PROJECTS.length : PROJECTS.filter(p => p[3] === c).length;
-  b.innerHTML = `${c}<sup>${String(n).padStart(2, '0')}</sup>`;
-  b.onclick = () => { cur = c; expanded = false; render(); };
-  b.dataset.c = c; fwrap.appendChild(b);
-});
-const plist = $('#plist'), moreBtn = $('#moreBtn');
-function render() {
-  $$('#filters button').forEach(b => b.classList.toggle('on', b.dataset.c === cur));
-  const list = PROJECTS.filter(p => cur === '전체' || p[3] === cur);
-  const shown = expanded ? list : list.slice(0, LIMIT);
-  plist.innerHTML = shown.map(([y, t, i, c]) =>
-    `<li class="prow"><span class="yr">${y}</span><span class="tt">${t}</span><span class="ind">${i}</span><span class="cat" data-c="${c}">${c}</span><span class="go"></span></li>`).join('');
-  $('#projCount').textContent = `${String(shown.length).padStart(2, '0')} / ${String(list.length).padStart(2, '0')} PROJECTS`;
-  moreBtn.parentElement.style.display = list.length > LIMIT ? '' : 'none';
-  moreBtn.firstChild.textContent = expanded ? '접기 ' : '전체 실적 보기 ';
-}
-moreBtn.onclick = () => { expanded = !expanded; render(); };
-render();
+/* ── Content renderers (data.js: NEWS, PROJECTS, BL, TEAMS, MARQUEE) ── */
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const qs = new URLSearchParams(location.search);
+const PH = '설명이 들어갈 내용입니다.';
+const txt = v => v ? esc(v) : `<span class="ph">${PH}</span>`;
+const list = arr => `<ul>${arr.map(x => `<li>${esc(x).replace(/\n/g, '<br>')}</li>`).join('')}</ul>`;
+const paras = v => [].concat(v).map(x => `<p>${esc(x)}</p>`).join('');
+const go = '<span class="go"></span>';
+const setHead = (crumb, head) => { $('#crumb').innerHTML = crumb; $('#pheadIn').innerHTML = head; };
+const chips = arr => `<div class="chips">${arr.map((c, i) => `<span class="chip${i ? '' : ' acc'}">${esc(c)}</span>`).join('')}</div>`;
+const projIdx = t => PROJECTS.findIndex(p => p.t === t);
+
+/* marquee */
+const fill = (el, arr) => { const h = arr.map(n => `<span>${esc(n)}</span>`).join(''); el.innerHTML = h + h; };
+if ($('#mq1')) { fill($('#mq1'), MARQUEE[0]); fill($('#mq2'), MARQUEE[1]); }
+
+/* news */
+const newsRow = n => `<a class="prow nrow" href="news-detail.html?id=${n.id}"><span class="yr">${n.date}</span><span class="tt">${esc(n.ttl)}</span><span class="cat" data-c="${esc(n.tag)}">${esc(n.tag)}</span>${go}</a>`;
+if ($('#homeNews')) $('#homeNews').innerHTML = NEWS.slice(0, 4).map(newsRow).join('');
+if ($('#newsList')) $('#newsList').innerHTML = NEWS.map(newsRow).join('');
+
+const NEWS_IMG = ['images/feat-2.jpg', 'images/feat-3.jpg', 'images/feat-1.jpg', 'images/bl-ito.jpg', 'images/bl-si.jpg', 'images/bl-infra.avif'];
+if ($('#newsDetail')) {
+  const i = Math.max(0, NEWS.findIndex(n => n.id === qs.get('id'))), n = NEWS[i];
+  setHead(`<a href="index.html">Home</a><i>/</i><a href="news.html">News&amp;Notices</a><i>/</i><span>${esc(n.tag)}</span>`,
+    `<h1 class="sm">${esc(n.ttl)}</h1>${chips([n.tag, n.date, '미래아이엔텍'])}`);
+  $('#newsDetail').innerHTML = `<div class="dtl-body rv">
+    <figure class="fig"><img src="${n.img || NEWS_IMG[i % NEWS_IMG.length]}" alt="${esc(n.ttl)} 관련 이미지"></figure>
+    <h2>게시 내용</h2>${paras(n.body)}</div>`;
+  $('#newsPager').innerHTML = `<a class="lnk" href="news.html"><span class="arr back"></span>목록으로</a><span class="mono">게시물 ${i + 1} / ${NEWS.length}</span>`;
+  document.title = `${n.ttl} | 미래아이엔텍`;
 }
 
-/* viz — industry breakdown */
-if ($('#viz')) {
-const inds = {};
-PROJECTS.forEach(p => { const k = p[2] === '기타' || p[2] === '서비스' ? '제조·서비스' : p[2]; inds[k] = (inds[k] || 0) + 1; });
-const order = ['은행', '보험', '저축은행', '기타 금융', '제조·서비스'];
-const cols = ['#0A110F', '#3C4843', '#7A8680', 'oklch(0.52 0.13 152)', 'oklch(0.74 0.17 152)'];
-$('#vizBar').innerHTML = order.map((k, i) => `<i style="flex:${inds[k] || 0};background:${cols[i]};transition-delay:${i * 0.08}s"></i>`).join('');
-$('#vizLegend').innerHTML = order.map((k, i) => `<div><i style="background:${cols[i]}"></i>${k}<b>${inds[k] || 0}</b></div>`).join('');
-$('#vizNote').textContent = `N = ${PROJECTS.length} · 2024–2026`;
+/* projects list */
+if ($('#projGrid')) {
+  const FILTERS = [
+    { f: 'k', lbl: 'Type', opts: ['SI', 'ITO', 'Solution', '기타', '인프라'] },
+    { f: 'c', lbl: 'Industry', opts: ['공공', '기타', '기타 금융', '미디어/ENT', '보험', '서비스', '은행', '저축은행', '증권'] },
+    { f: 's', lbl: 'Status', opts: ['진행중', '완료'] },
+  ];
+  const sel = { k: 'ALL', c: 'ALL', s: 'ALL' }, PER = 9;
+  let page = 1;
+  const fwrap = $('#projFilters'), grid = $('#projGrid'), pager = $('#projPager');
+  const render = () => {
+    fwrap.innerHTML = FILTERS.map(g => `<div class="fgrp"><em>${g.lbl}</em><div class="filters">${['ALL', ...g.opts].map(v => {
+      const n = v === 'ALL' ? PROJECTS.length : PROJECTS.filter(p => p[g.f] === v).length;
+      return `<button class="${v === sel[g.f] ? 'on' : ''}" data-f="${g.f}" data-v="${esc(v)}">${v === 'ALL' ? '전체' : esc(v)}<sup>${String(n).padStart(2, '0')}</sup></button>`;
+    }).join('')}</div></div>`).join('');
+    const rows = PROJECTS.map((p, i) => ({ ...p, i })).filter(p => FILTERS.every(g => sel[g.f] === 'ALL' || p[g.f] === sel[g.f]));
+    const pages = Math.max(1, Math.ceil(rows.length / PER));
+    page = Math.min(page, pages);
+    $('#projCount').textContent = `${String(rows.length).padStart(2, '0')} PROJECTS`;
+    $('#projEmpty').hidden = rows.length > 0;
+    grid.innerHTML = rows.slice((page - 1) * PER, page * PER).map(p =>
+      `<a class="pcard" href="project.html?i=${p.i}">
+        <div class="pcard-meta"><span class="cat" data-c="${esc(p.k)}">${esc(p.k)}</span><span>${esc(p.c)}</span><span>${p.y}</span><span class="st${p.s === '진행중' ? ' on' : ''}">${esc(p.s)}</span></div>
+        <h3>${esc(p.t)}</h3><span class="pcard-cl">${esc(p.cl)}</span>
+        <div class="pcard-foot"><time>${esc(p.d)}</time>${go}</div></a>`).join('');
+    let nums = '';
+    for (let n = 1; n <= pages; n++) nums += `<button data-pg="${n}"${n === page ? ' class="on" aria-current="page"' : ''}>${n}</button>`;
+    pager.innerHTML = pages > 1 ? `<button data-pg="${page - 1}" aria-label="이전 페이지"${page === 1 ? ' disabled' : ''}>&lsaquo;</button>${nums}<button data-pg="${page + 1}" aria-label="다음 페이지"${page === pages ? ' disabled' : ''}>&rsaquo;</button>` : '';
+  };
+  fwrap.onclick = e => { const b = e.target.closest('[data-f]'); if (!b) return; sel[b.dataset.f] = b.dataset.v; page = 1; render(); };
+  pager.onclick = e => {
+    const b = e.target.closest('[data-pg]'); if (!b || b.disabled) return;
+    page = +b.dataset.pg; render();
+    scrollTo({ top: fwrap.getBoundingClientRect().top + scrollY - 120, behavior: 'smooth' });
+  };
+  render();
 }
 
-/* marquee clients (공개 자료 게재 고객사) */
-const c1 = ['농협은행', 'IBK기업은행', 'SC제일은행', '흥국생명', '흥국화재', '현대카드', '라이나손해보험', 'KDB캐피탈'];
-const c2 = ['현대차증권', 'SBI저축은행', '한국투자저축은행', '애큐온저축은행', '애큐온캐피탈', 'BNK캐피탈', '태광그룹', '경동나비엔'];
-const fill = (el, arr) => { const h = arr.map(n => `<span>${n}</span>`).join(''); el.innerHTML = h + h; };
-if ($('#mq1')) { fill($('#mq1'), c1); fill($('#mq2'), c2); }
+/* project detail (PROJECTS 또는 TEAMS 의 팀 전용 프로젝트) */
+const projBody = p => {
+  const img = p.img || (p.k === 'SI' ? 'images/feat-3.jpg' : p.k === 'ITO' ? 'images/feat-2.jpg' : 'images/feat-1.jpg');
+  return `<div class="dtl-body rv">
+    <figure class="fig"><img src="${esc(img)}" alt="${esc(p.t)} 관련 이미지"><figcaption>${esc(p.t)}${p.cl ? ' — ' + esc(p.cl) : ''}</figcaption></figure>
+    <h2>Project Overview</h2><p>${txt(p.ov)}</p>
+    <h2>Description</h2><p>${txt(p.desc)}</p></div>
+  <aside class="dtl-side rv d1"><dl>
+    <div><dt>Type</dt><dd>${txt(p.k)}</dd></div>
+    <div><dt>Status</dt><dd>${txt(p.s)}</dd></div>
+    <div><dt>Name</dt><dd>${esc(p.t)}</dd></div>
+    <div><dt>Period</dt><dd>${txt(p.p)}</dd></div>
+    <div><dt>Client</dt><dd>${txt(p.cl)}</dd></div>
+  </dl></aside>`;
+};
+if ($('#projDetail')) {
+  const team = TEAMS.find(t => t.k === qs.get('team'));
+  const p = team ? team.prj[+qs.get('i')] || team.prj[0] : PROJECTS[+qs.get('i')] || PROJECTS[0];
+  const crumb = team
+    ? `<a href="index.html">Home</a><i>/</i><a href="team.html">Team</a><i>/</i><a href="team-detail.html?k=${team.k}">${esc(team.ttl)}</a><i>/</i><span>Related Projects</span>`
+    : `<a href="index.html">Home</a><i>/</i><a href="projects.html">Projects</a><i>/</i><span>${esc(p.k)}</span>`;
+  setHead(crumb, `<h1 class="sm">${esc(p.t)}</h1>${chips([p.k, p.s, p.y].filter(Boolean))}`);
+  $('#projDetail').innerHTML = projBody(p);
+  document.title = `${p.t} | 미래아이엔텍`;
+}
+
+/* business line */
+const blCard = (b, i) => `<a class="blc rv d${i % 2}" href="business-line.html?k=${b.k}">
+  <div class="blc-img"><img src="${b.img}" alt="${esc(b.ttl)} 관련 이미지"></div>
+  <div class="blc-in">
+    <div class="biz-top"><span class="biz-no">${b.no}</span><span class="biz-tag">${esc(b.en).toUpperCase()}</span></div>
+    <h3>${esc(b.ttl)}</h3><p>${esc(b.desc)}</p>
+    <ul>${b.pts.slice(0, 4).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+    <span class="lnk">자세히 보기 <span class="arr"></span></span>
+  </div></a>`;
+if ($('#blGrid')) $('#blGrid').innerHTML = BL.map(blCard).join('');
+
+if ($('#blDetail')) {
+  const b = BL.find(x => x.k === qs.get('k')) || BL[0];
+  setHead(`<a href="index.html">Home</a><i>/</i><a href="business.html">Business Line</a><i>/</i><span>${esc(b.en)}</span>`,
+    `<h1>${esc(b.ttl)}</h1><p class="lead">${esc(b.desc)}</p>${chips([b.no, ...b.pts.slice(0, 4)])}`);
+  const ph = `<p class="ph">${PH}</p>`;
+  const feats = !b.feats ? '' : '<h2>Service Features</h2>' + (b.feats.length
+    ? `<div class="filters" id="sfTabs">${b.feats.map((f, i) => `<button class="${i ? '' : 'on'}" data-sf="${i}">${esc(f.h)}</button>`).join('')}</div>`
+      + b.feats.map((f, i) => `<div class="sfeat" data-sfp="${i}"${i ? ' hidden' : ''}>
+          ${f.img ? `<figure class="fig"><img src="${esc(f.img)}" alt="${esc(f.h)} 관련 이미지"><figcaption>${esc(f.h)}</figcaption></figure>` : ''}
+          ${f.p ? paras(f.p) : ''}${f.li && f.li.length ? list(f.li) : (f.p ? '' : ph)}</div>`).join('')
+    : ph);
+  const clients = !b.clients ? '' : '<h2>Main Clients</h2>' + (b.clients.length
+    ? `<div class="logos">${b.clients.map(c => `<div title="${esc(c.n)}"><span>${esc(c.n)}</span>${c.img ? `<img src="${esc(c.img)}" alt="${esc(c.n)} 로고" onload="this.previousElementSibling.remove()" onerror="this.remove()">` : ''}</div>`).join('')}</div>`
+    : ph);
+  $('#blDetail').innerHTML = `<div class="dtl-body wide rv">
+    <h2>${esc(b.en)} 개요</h2>${paras(b.sum)}
+    ${b.secs.map(s => `<h2>${esc(s.h)}</h2>${paras(s.p)}${s.li && s.li.length ? list(s.li) : ''}`).join('')}
+    <figure class="fig"><img src="${b.img}" alt="${esc(b.ttl)} 관련 이미지"><figcaption>${esc(b.ttl)} — ${esc(b.en)}</figcaption></figure>
+    ${feats}${clients}</div>`;
+  const tabs = $('#sfTabs');
+  if (tabs) tabs.onclick = e => {
+    const btn = e.target.closest('[data-sf]'); if (!btn) return;
+    $$('[data-sf]', tabs).forEach(x => x.classList.toggle('on', x === btn));
+    $$('[data-sfp]').forEach(p => p.hidden = p.dataset.sfp !== btn.dataset.sf);
+  };
+  document.title = `${b.ttl} | 미래아이엔텍`;
+}
+
+/* team detail */
+if ($('#teamDetail')) {
+  const t = TEAMS.find(x => x.k === qs.get('k')) || TEAMS[0];
+  const name = t.name ? `${t.name} ${t.ttl}` : t.ttl;
+  setHead(`<a href="index.html">Home</a><i>/</i><a href="team.html">Team</a><i>/</i><span>${esc(t.ttl)}</span>`,
+    `<h1>${esc(name)}</h1><p class="lead">${esc(t.en)}</p>${chips([t.k === 'ceo' ? 'CEO' : 'Team', '미래아이엔텍'])}`);
+  const intro = t.k === 'ceo'
+    ? `<div class="ceo"><figure class="ceo-ph rv"><img src="${t.img}" alt="미래아이엔텍 ${esc(name)} 사진"><figcaption>${esc(t.name)} · 대표이사 (CEO)</figcaption></figure>
+       <div class="dtl-body rv d1">${t.bio.map(s => `<h2>${esc(s.h)}</h2>${list(s.li)}`).join('')}</div></div>`
+    : `<div class="dtl-body wide rv"><h2>Team Introduction</h2>${paras(t.intro)}<h2>Main Functions</h2>${list(t.funcs)}<h2>Key Capabilities</h2>${list(t.caps)}</div>`;
+  const LIMIT = 5;
+  const rows = t.prj.map((p, i) => {
+    const pi = projIdx(p.t);
+    return `<a class="prow rp${i >= LIMIT ? ' hid' : ''}" href="${pi >= 0 ? `project.html?i=${pi}` : `project.html?team=${t.k}&i=${i}`}"><span class="yr">${p.y}</span><span class="tt">${esc(p.t)}</span>${go}</a>`;
+  }).join('');
+  const rp = t.prj.length
+    ? `<h2 class="rp-h">Related Projects <sup>${String(t.prj.length).padStart(2, '0')}</sup></h2><div class="plist">${rows}</div>
+       ${t.prj.length > LIMIT ? '<div class="more"><button class="btn" id="rpMore">더보기 <span class="arr"></span></button></div>' : ''}`
+    : `<h2 class="rp-h">Related Projects</h2><div class="rp-empty"><b>프로젝트 소개를 준비하고 있습니다.</b><p>${esc(t.ttl)}의 다양한 연구 활동과 프로젝트를 소개할 예정입니다. 앞으로 이곳에서 연구소의 새로운 소식과 활동을 만나보실 수 있습니다.</p></div>`;
+  $('#teamDetail').innerHTML = `${intro}<div class="rp-wrap rv">${rp}</div>`;
+  const more = $('#rpMore');
+  if (more) more.onclick = () => { $$('.rp.hid').forEach(r => r.classList.remove('hid')); more.parentElement.remove(); };
+  document.title = `${name} | 미래아이엔텍`;
+}
+
+/* contact form (시안: 실제 전송 없음) */
+const frm = $('#contactForm');
+if (frm) frm.onsubmit = e => { e.preventDefault(); $('#frmMsg').textContent = '시안 화면이므로 실제 전송은 되지 않습니다.'; };
 
 /* ── Reveal + counters ── */
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
   e.target.classList.add('on'); io.unobserve(e.target);
 }), { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-$$('.rv, #cycle, #viz').forEach(el => io.observe(el));
+$$('.rv').forEach(el => io.observe(el));
 
 const cio = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;

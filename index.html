@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>미래아이엔텍 | Mirae I&amp;N Tech</title>
+<title>미래아이엔텍 | Mirae I&amp;Tec</title>
+<meta name="description" content="미래아이엔텍은 2003년 설립 이래 금융권 IT에 특화된 전문기업으로, ITO·SI·인프라·솔루션 등 IT 전 분야에 걸쳐 차별화된 서비스를 제공합니다.">
 <link rel="stylesheet" href="site.css">
 </head>
 <body style="background-color: rgb(224, 224, 203)">
@@ -12,30 +13,71 @@
 <header class="hdr" id="hdr">
   <div class="wrap hdr-in">
     <a href="index.html" class="logo" aria-label="미래아이엔텍 홈">
-      <span class="logo-mark">mr<i></i>nt</span>
+      <img class="logo-img on-dark" src="images/logo-white.png" alt="MRINT">
+      <img class="logo-img on-light" src="images/logo.png" alt="" aria-hidden="true">
       <span class="logo-kr">미래아이엔텍</span>
     </a>
-    <nav class="nav">
-      <a href="about.html">회사소개</a>
-      <a href="business.html">사업영역</a>
-      <a href="competency.html">핵심역량</a>
-      <a href="projects.html">사업실적</a>
-      <a href="careers.html">인재채용</a>
+    <nav class="nav" aria-label="주 메뉴">
+      <div class="nav-item">
+        <a href="company.html" class="nav-top">COMPANY<i class="caret"></i></a>
+        <div class="drop">
+          <a href="company.html"><em>01</em><span><b>Mirae I&amp;Tec</b><i>기업 소개 · 비전 · 오시는 길</i></span></a>
+          <a href="team.html"><em>02</em><span><b>Team</b><i>대표이사 및 5개 전문 조직</i></span></a>
+          <a href="news.html"><em>03</em><span><b>News&amp;Notices</b><i>뉴스 · 공지사항</i></span></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="business.html" class="nav-top">BUSINESS<i class="caret"></i></a>
+        <div class="drop">
+          <a href="projects.html"><em>01</em><span><b>Projects</b><i>수행 프로젝트 전체 목록</i></span></a>
+          <a href="business.html"><em>02</em><span><b>Business Line</b><i>ITO · SI · 인프라 · 솔루션</i></span></a>
+        </div>
+      </div>
+      <button class="nav-search" type="button" data-open-search>SEARCH <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4L14 14"/></svg></button>
       <a href="contact.html" class="nav-cta">Contact</a>
     </nav>
     <button class="burger" id="burger" aria-label="메뉴"><span></span><span></span></button>
   </div>
 </header>
 <div class="mnav" id="mnav">
-  <ol>
-    <li><a href="about.html">회사소개</a></li>
-    <li><a href="business.html">사업영역</a></li>
-    <li><a href="competency.html">핵심역량</a></li>
-    <li><a href="projects.html">사업실적</a></li>
-    <li><a href="careers.html">인재채용</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ol>
-  <div class="mnav-foot">T. 02-557-5267<br><a href="mailto:mrint01@mrint.co.kr">mrint01@mrint.co.kr</a></div>
+  <div class="mnav-groups">
+    <div class="mnav-grp">
+      <span class="mono">COMPANY</span>
+      <ol>
+        <li><a href="company.html">Mirae I&amp;Tec<small>기업 소개 · 비전 · 오시는 길</small></a></li>
+        <li><a href="team.html">Team<small>대표이사 및 5개 전문 조직</small></a></li>
+        <li><a href="news.html">News&amp;Notices<small>뉴스 · 공지사항</small></a></li>
+      </ol>
+    </div>
+    <div class="mnav-grp">
+      <span class="mono">BUSINESS</span>
+      <ol>
+        <li><a href="projects.html">Projects<small>수행 프로젝트 전체 목록</small></a></li>
+        <li><a href="business.html">Business Line<small>ITO · SI · 인프라 · 솔루션</small></a></li>
+      </ol>
+    </div>
+    <div class="mnav-grp">
+      <span class="mono">CONTACT</span>
+      <ol>
+        <li><a href="contact.html">Contact<small>프로젝트 · 협력 문의</small></a></li>
+      </ol>
+    </div>
+  </div>
+  <div class="mnav-foot">
+    <button class="nav-search" type="button" data-open-search>SEARCH <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4L14 14"/></svg></button>
+    <div>서울시 중구 수표로 23, 1001호, 1101호<br>T. 02-557-5267 · F. 02-557-5268<br><a href="mailto:mrint01@mrint.co.kr">mrint01@mrint.co.kr</a></div>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="srch" id="srch" role="dialog" aria-label="검색">
+  <div class="wrap">
+    <div class="eyebrow">Search</div>
+    <h2>무엇을 찾으시나요?</h2>
+    <input id="srchIn" type="search" placeholder="프로젝트, 뉴스, 사업분야 검색" autocomplete="off">
+    <ul id="srchOut"></ul>
+    <button class="btn btn-ghost" type="button" data-close-search>닫기 <span class="arr"></span></button>
+  </div>
 </div>
 
 <!-- 01 Hero -->
@@ -61,22 +103,128 @@
   </div>
 </section>
 
+<!-- Main Clients -->
+<section class="clients-band">
+  <div class="wrap clients">
+    <div>
+      <div class="eyebrow">Main Clients</div>
+      <p class="note">금융권 중심의 검증된 고객사</p>
+    </div>
+    <div>
+      <div class="marq marq-row"><div class="marq-track" id="mq1"></div></div>
+      <div class="marq marq-row"><div class="marq-track" id="mq2"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 Company -->
+<section class="about sec" id="company">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow rv">01 — Company</div>
+      <h2 class="rv d1">금융의 안정성과<br>디지털 혁신을 함께 설계합니다</h2>
+    </div>
+    <div class="intro">
+      <div class="intro-l">
+        <p class="lead rv">(주)미래아이엔텍은 최고의 기술력과 비즈니스에 대한 깊이 있는 이해를 바탕으로 고객의 Digital transformation을 실현합니다. IT 인프라부터 사용자 지원을 위한 Help Desk까지 IT 환경 전반을 구축하고 관리하여 고객의 생산성과 효율성을 극대화하기 위한 솔루션을 제공합니다.</p>
+        <p class="rv d1">2003년부터 다양한 고객과 디지털 전환 작업을 함께하며 쌓은 노하우와 신뢰를 바탕으로 컨설팅, ITO, 하드웨어, 네트워크 및 보안 등 고객이 필요로 하는 모든 IT 서비스를 제공하고 있습니다.</p>
+        <figure class="fig rv d2"><img src="images/company-intro.jpg" alt="현대적인 오피스 빌딩의 유리 외벽 반사 이미지"></figure>
+        <a class="lnk rv" href="company.html">회사 소개 자세히 보기 <span class="arr"></span></a>
+      </div>
+      <ol class="comp-list intro-r">
+        <li class="comp-item rv">
+          <span class="n">01</span>
+          <div>
+            <h3>금융 도메인에 대한 깊이 있는 이해<small>Financial Domain</small></h3>
+            <p>은행·보험·저축은행·캐피탈 등 금융 전 업권의 시스템 구축과 운영 경험을 바탕으로, 복잡한 금융 업무 요구사항을 정확하게 해석하고 안정적으로 구현합니다.</p>
+          </div>
+        </li>
+        <li class="comp-item rv">
+          <span class="n">02</span>
+          <div>
+            <h3>검증된 프로젝트 수행 경험<small>Proven Delivery</small></h3>
+            <p>2003년 설립 이후 20년 이상의 업무 수행 경험을 보유하고 있으며, 흥국생명·IBK기업은행·현대차증권·SC제일은행·SBI저축은행·애큐온캐피탈 등 금융권 고객과 다양한 사업을 수행해 왔습니다.</p>
+          </div>
+        </li>
+        <li class="comp-item rv">
+          <span class="n">03</span>
+          <div>
+            <h3>서비스 연속성과 품질을 보장하는 조직<small>Continuity</small></h3>
+            <p>기존 운영 우수 인력을 중심으로 조직을 구성해 서비스 연속성과 품질을 보장하고, 인력 관리 프로그램(MIRAE_IN)과 협력업체 관리 시스템을 통해 적기 적소에 전문 인력을 지원합니다.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- Financial IT Partner -->
+<section class="tech sec dark" id="partner">
+  <div class="wrap">
+    <div class="tech-grid">
+      <div class="tech-txt">
+        <div class="eyebrow rv">Financial IT Partner</div>
+        <h2 class="rv d1">금융권의 복잡한<br>요구사항을 <em>이해하는</em><br>전문 파트너</h2>
+        <p class="rv d2">체계적인 방법론, 정형화된 프로세스, 최신 기술로 고품격 IT 서비스를 제공합니다. 서비스 수준 관리 체계를 정착시키기 위한 단계적인 SLA 적용 방안을 수립하여 체계적이고 효율적인 서비스를 제공합니다.</p>
+      </div>
+      <div class="tech-vis rv d2"><canvas id="techCanvas"></canvas></div>
+    </div>
+    <div class="facts">
+      <div class="fact rv"><div class="k">Established</div><div class="v">2003</div><div class="d">설립 (금융 IT 전문)</div></div>
+      <div class="fact rv d1"><div class="k">Experience</div><div class="v"><span data-count="20">0</span><small>년+</small></div><div class="d">금융 IT 수행 경험</div></div>
+      <div class="fact rv d2"><div class="k">Business Lines</div><div class="v" data-count="4">0</div><div class="d">핵심 사업 영역</div></div>
+      <div class="fact rv d3"><div class="k">Service Level</div><div class="v">SLA</div><div class="d">서비스 수준 관리 체계</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Business Line -->
+<section class="biz sec" id="business">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow rv">02 — Business</div>
+      <h2 class="rv d1">네 개의 축으로<br>금융 IT 전 영역을 담당합니다</h2>
+      <p class="rv d2">IT Outsourcing · System Integration · Infrastructure · Solution. 서로 다른 네 개의 사업 영역을 하나의 운영 체계로 연결해, 기획부터 구축·운영까지 끊김 없이 이어지는 서비스를 제공합니다.</p>
+    </div>
+    <div class="bl-grid" id="blGrid"></div>
+  </div>
+</section>
+
+<!-- 03 News -->
+<section class="about sec" id="news">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow rv">03 — News</div>
+      <h2 class="rv d1">News &amp; Notices</h2>
+      <p class="rv d2">미래아이엔텍의 주요 사업 수주 소식과 공지사항을 전합니다.</p>
+    </div>
+    <div class="plist" id="homeNews"></div>
+    <div class="more"><a class="btn" href="news.html">전체보기 <span class="arr"></span></a></div>
+  </div>
+</section>
+
 <footer class="ftr">
   <div class="wrap">
     <div class="ftr-top">
-      <a href="index.html" class="logo"><span class="logo-mark">mr<i></i>nt</span><span class="logo-kr">㈜미래아이엔텍</span></a>
+      <div class="ftr-brand">
+        <a href="index.html" class="logo"><img class="logo-img" src="images/logo-white.png" alt="MRINT"><span class="logo-kr">㈜미래아이엔텍</span></a>
+        <p>(주)미래아이엔텍은 2003년 설립 이래 금융 IT에 특화된 전문기업으로 SI·ITO·컨설팅 등 IT 전 분야에 걸쳐 차별화된 서비스를 제공합니다.</p>
+      </div>
       <nav class="ftr-nav">
-        <a href="about.html">회사소개</a><a href="business.html">사업영역</a><a href="competency.html">핵심역량</a><a href="projects.html">사업실적</a><a href="careers.html">인재채용</a><a href="contact.html">Contact</a>
+        <div><span class="mono">Company</span><a href="company.html">Mirae I&amp;Tec</a><a href="team.html">Team</a><a href="news.html">News&amp;Notices</a></div>
+        <div><span class="mono">Business</span><a href="projects.html">Projects</a><a href="business.html">Business Line</a></div>
+        <div><span class="mono">Contact</span><a href="contact.html">문의하기</a><a href="tel:025575267">T. 02-557-5267</a><a href="mailto:mrint01@mrint.co.kr">mrint01@mrint.co.kr</a></div>
       </nav>
     </div>
     <div class="ftr-big" aria-hidden="true">mr<i></i>nt</div>
     <div class="ftr-bot">
-      <span>© 2026 MIRAE I&amp;N TECH CO., LTD. ALL RIGHTS RESERVED.</span>
-      <span>대표이사 김학연 · 서울시 중구 수표로 23</span>
+      <span>© 2026 MIRAE I&amp;TEC CO., LTD. ALL RIGHTS RESERVED.</span>
+      <span>대표이사 김학연 · 서울시 중구 수표로 23, 1001호, 1101호 · F. 02-557-5268</span>
     </div>
   </div>
 </footer>
 
+<script src="data.js"></script>
 <script src="site.js"></script>
 </body>
 </html>

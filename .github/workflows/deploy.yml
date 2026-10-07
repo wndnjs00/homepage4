@@ -26,7 +26,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir _site
-          cp *.html site.css site.js _site/
+          cp -r *.html site.css site.js data.js images _site/
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5

@@ -145,7 +145,18 @@ All projects, clients, service descriptions, and contact details come from the c
 - Fonts: Pretendard (OFL) and JetBrains Mono (OFL).
 
 ## Files
-- `index.html` — home (Hero)
-- `about.html`, `business.html`, `competency.html` (Competency + Technology), `projects.html`, `careers.html`, `contact.html` — one page per menu item, each with a dark page-hero band (`.phero`) and the active link marked with `aria-current="page"`
-- `site.css` — tokens, layout, responsive rules, and hover/motion
-- `site.js` — header behavior, clock, hero and tech canvases, project data/filter/render, industry bar, marquee, reveals, and counters
+The menu structure, copy, data and photos follow the reference site (wndnjs00.github.io/good). The visual design (ink/green tokens, hero canvas, motion) is unchanged.
+
+Menu: **COMPANY** (Mirae I&Tec · Team · News&Notices) / **BUSINESS** (Projects · Business Line) / SEARCH / Contact.
+
+- `index.html` — Hero (canvas), Main Clients marquee, 01 Company, Financial IT Partner (tech canvas + facts), 02 Business Line, 03 News
+- `company.html` — company introduction, core values, company info, location map
+- `team.html` / `team-detail.html?k=ceo|ito|si|infra|solution|lab` — CEO and 5 teams, with related projects
+- `news.html` / `news-detail.html?id=n1…` — News & Notices
+- `projects.html` / `project.html?i=N` (or `?team=k&i=N` for team-only projects) — Type · Industry · Status filters, 9 per page
+- `business.html` / `business-line.html?k=ito|si|infra|solution` — 4 business lines with service-feature tabs and main clients
+- `contact.html` — inquiry form (mock, not sent) and contact details
+- `data.js` — all content data: `NEWS`, `PROJECTS`, `CLIENTS`, `BL`, `TEAMS`, `MARQUEE`
+- `site.js` — header/dropdown, search overlay, hero and tech canvases, page renderers (driven by `data.js`), reveals, counters
+- `site.css` — tokens, layout, responsive rules, hover/motion
+- `images/` — official logo (`logo.png`, `logo-white.png` for dark backgrounds), CEO photo, page-hero and section photos

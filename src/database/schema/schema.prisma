@@ -1,0 +1,141 @@
+// 미래아이엔텍 홈페이지 스키마
+// 현재 공개 페이지는 src/database/data 의 정적 데이터를 읽는다 (GitHub Pages 정적 배포).
+// 관리자 기능 도입 시 repository 를 이 스키마 기반 조회로 교체한다.
+// PK 전략: bigint identity (CLAUDE.md 6장 TODO 확정 전 임시 결정)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model News {
+  id          BigInt   @id @default(autoincrement())
+  tag         String
+  title       String
+  body        String[]
+  image       String?
+  publishedOn String   @map("published_on")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([publishedOn])
+  @@map("news")
+}
+
+model Project {
+  id          BigInt   @id @default(autoincrement())
+  title       String
+  type        String
+  industry    String
+  status      String
+  client      String
+  year        Int
+  noticeDate  String   @map("notice_date")
+  period      String?
+  overview    String?
+  description String?
+  image       String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([type, industry, status])
+  @@map("projects")
+}
+
+model BusinessLine {
+  id          BigInt   @id @default(autoincrement())
+  slug        String   @unique
+  no          String
+  title       String
+  enTitle     String   @map("en_title")
+  image       String
+  description String
+  points      String[]
+  summary     String[]
+  /// [{ heading, paragraphs[], items[] }]
+  sections    Json
+  /// [{ heading, image?, paragraphs[], items[] }] — null 이면 섹션 숨김
+  features    Json?
+  /// [{ name, logo? }] — null 이면 섹션 숨김
+  clients     Json?
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("business_lines")
+}
+
+model Team {
+  id              BigInt        @id @default(autoincrement())
+  slug            String        @unique
+  title           String
+  enTitle         String        @map("en_title")
+  personName      String?       @map("person_name")
+  image           String?
+  /// CEO 전용 — [{ heading, items[] }]
+  bio             Json?
+  intro           String[]
+  functions       String[]
+  capabilities    String[]
+  sortOrder       Int           @default(0) @map("sort_order")
+  relatedProjects TeamProject[]
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("teams")
+}
+
+/// 팀별 Related Projects. projectId 가 있으면 프로젝트 상세로, 없으면 팀 전용 상세로 연결
+model TeamProject {
+  id          BigInt   @id @default(autoincrement())
+  teamId      BigInt   @map("team_id")
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  projectId   BigInt?  @map("project_id")
+  title       String
+  year        Int
+  type        String?
+  status      String?
+  client      String?
+  period      String?
+  overview    String?
+  description String?
+  image       String?
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([teamId])
+  @@map("team_projects")
+}
+
+model Client {
+  id        BigInt   @id @default(autoincrement())
+  name      String
+  logo      String?
+  /// 메인 Main Clients 띠의 줄 번호 (1, 2). null 이면 노출 안 함
+  homeRow   Int?     @map("home_row")
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("clients")
+}
+
+/// 문의 접수 — 서버 배포 전환 후 Server Action 으로 저장 예정
+model Inquiry {
+  id        BigInt   @id @default(autoincrement())
+  company   String
+  name      String
+  phone     String
+  email     String
+  field     String
+  message   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("inquiries")
+}

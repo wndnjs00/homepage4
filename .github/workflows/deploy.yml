@@ -23,17 +23,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Prepare site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # Prisma Client 타입 생성 (seed.ts 등 typecheck 에 필요)
+      - run: npm run db:generate
+
+      - name: Lint · Typecheck · Test
         run: |
-          mkdir _site
-          cp -r *.html site.css site.js data.js images _site/
-          touch _site/.nojekyll
+          npm run lint
+          npm run typecheck
+          npm test
+
+      # Next.js 정적 내보내기 → out/
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /homepage4
+
+      - run: touch out/.nojekyll
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: out
 
       - id: deployment
         uses: actions/deploy-pages@v4
